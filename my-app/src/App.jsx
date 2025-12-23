@@ -11,7 +11,13 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/courses" element={<Courses />} />
+                <Route path="/add-course" element={<AddCourse />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/edit-course/:id" element={<EditCourse />} />
+
+
+
+
             </Routes>
         </Layout>
     );
