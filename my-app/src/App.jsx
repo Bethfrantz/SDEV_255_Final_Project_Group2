@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import Courses from "./pages/Courses";
 import Login from "./pages/Login";
 
+const [user, setUser] = useState(null);
+
 export default function App() {
     return (
         <Layout>
@@ -12,7 +14,7 @@ export default function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/courses" element={<Courses />} />
                 <Route path="/add-course" element={<AddCourse />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/login" element={<Login setUser={setUser} />} />
                 <Route path="/edit-course/:id" element={<EditCourse />} />
 
 

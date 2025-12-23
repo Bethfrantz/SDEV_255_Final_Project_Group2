@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function Courses() {
+export default function Courses({ user }) {
     const [courses, setCourses] = useState([]);
 
     // Load all courses
@@ -11,13 +11,16 @@ export default function Courses() {
             .then(data => setCourses(data));
     }, []);
 
-    // Delete a course
+    // Delete a course (Teacher only)
     function handleDelete(id) {
         const confirmDelete = window.confirm("Are you sure you want to delete this course?");
         if (!confirmDelete) return;
 
         fetch(`http://localhost:5000/courses/${id}`, {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("token")
+            }
         })
             .then(() => {
                 setCourses(courses.filter(course => course._id !== id));
@@ -28,9 +31,12 @@ export default function Courses() {
         <div>
             <h1>Courses</h1>
 
-            <Link to="/add-course" style={styles.addButton}>
-                + Add New Course
-            </Link>
+            {/* Teacher-only Add Course button */}
+            {user?.role === "Teacher" && (
+                <Link to="/add-course" style={styles.addButton}>
+                    + Add New Course
+                </Link>
+            )}
 
             <table style={styles.table}>
                 <thead>
@@ -39,7 +45,7 @@ export default function Courses() {
                         <th>Subject</th>
                         <th>Credits</th>
                         <th>Description</th>
-                        <th>Actions</th>
+                        {user?.role === "Teacher" && <th>Actions</th>}
                     </tr>
                 </thead>
 
@@ -51,18 +57,24 @@ export default function Courses() {
                             <td>{course.credits}</td>
                             <td>{course.description}</td>
 
-                            <td>
-                                <Link to={`/edit-course/${course._id}`} style={styles.editButton}>
-                                    Edit
-                                </Link>
+                            {/* Teacher-only Edit/Delete */}
+                            {user?.role === "Teacher" && (
+                                <td>
+                                    <Link
+                                        to={`/edit-course/${course._id}`}
+                                        style={styles.editButton}
+                                    >
+                                        Edit
+                                    </Link>
 
-                                <button
-                                    onClick={() => handleDelete(course._id)}
-                                    style={styles.deleteButton}
-                                >
-                                    Delete
-                                </button>
-                            </td>
+                                    <button
+                                        onClick={() => handleDelete(course._id)}
+                                        style={styles.deleteButton}
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
+                            )}
                         </tr>
                     ))}
                 </tbody>
