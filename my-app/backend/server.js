@@ -13,11 +13,15 @@ const teacher = require("./middleware/teacher");
 const app = express();
 const PORT = 5000;
 
-// Middleware
+// =========================
+// MIDDLEWARE
+// =========================
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection
+// =========================
+// DATABASE CONNECTION
+// =========================
 mongoose
     .connect("mongodb://localhost:27017/coursesdb")
     .then(() => console.log("MongoDB connected"))
@@ -28,7 +32,7 @@ mongoose
 // USER AUTHENTICATION
 // =========================
 
-// Register (optional, but useful for testing)
+// Register (optional for testing)
 app.post("/register", async (req, res) => {
     const { username, password, role } = req.body;
 
@@ -59,7 +63,59 @@ app.post("/login", async (req, res) => {
         { expiresIn: "1h" }
     );
 
-    res.json({ message: "Login successful", token, role: user.role, username: user.username });
+    res.json({
+        message: "Login successful",
+        token,
+        username: user.username,
+        role: user.role,
+        registeredCourses: user.registeredCourses
+    });
+});
+
+
+// =========================
+// USER COURSE REGISTRATION (CART)
+// =========================
+
+// Add course to student's schedule
+app.post("/api/users/cart", auth, async (req, res) => {
+    const userId = req.user.id;
+    const { courseId } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    if (user.registeredCourses.includes(courseId)) {
+        return res.status(400).json({ message: "Already registered" });
+    }
+
+    user.registeredCourses.push(courseId);
+    await user.save();
+
+    res.json({
+        message: "Course added!",
+        registeredCourses: user.registeredCourses
+    });
+});
+
+// Remove course from student's schedule
+app.delete("/api/users/cart/:courseId", auth, async (req, res) => {
+    const userId = req.user.id;
+    const { courseId } = req.params;
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    user.registeredCourses = user.registeredCourses.filter(
+        id => id.toString() !== courseId
+    );
+
+    await user.save();
+
+    res.json({
+        message: "Course removed",
+        registeredCourses: user.registeredCourses
+    });
 });
 
 
@@ -73,19 +129,19 @@ app.get("/courses", async (req, res) => {
     res.json(courses);
 });
 
-// Protected: Create course (Teacher only)
+// Teacher-only: Create course
 app.post("/courses", auth, teacher, async (req, res) => {
     const course = await Course.create(req.body);
     res.json(course);
 });
 
-// Protected: Update course (Teacher only)
+// Teacher-only: Update course
 app.put("/courses/:id", auth, teacher, async (req, res) => {
     const updated = await Course.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json(updated);
 });
 
-// Protected: Delete course (Teacher only)
+// Teacher-only: Delete course
 app.delete("/courses/:id", auth, teacher, async (req, res) => {
     await Course.findByIdAndDelete(req.params.id);
     res.json({ message: "Course deleted" });

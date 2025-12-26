@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function Courses({ user }) {
+export default function Courses({ user, setUser }) {
     const [courses, setCourses] = useState([]);
 
     // Load all courses
@@ -11,7 +11,7 @@ export default function Courses({ user }) {
             .then(data => setCourses(data));
     }, []);
 
-    // Delete a course (Teacher only)
+    // Teacher-only: Delete a course
     function handleDelete(id) {
         const confirmDelete = window.confirm("Are you sure you want to delete this course?");
         if (!confirmDelete) return;
@@ -24,6 +24,28 @@ export default function Courses({ user }) {
         })
             .then(() => {
                 setCourses(courses.filter(course => course._id !== id));
+            });
+    }
+
+    // Student-only: Register for a course
+    function handleRegister(courseId) {
+        fetch("http://localhost:5000/api/users/cart", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + localStorage.getItem("token")
+            },
+            body: JSON.stringify({ courseId })
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert("Course Added!");
+
+                // Update user state so UI updates instantly
+                setUser(prev => ({
+                    ...prev,
+                    registeredCourses: data.registeredCourses
+                }));
             });
     }
 
@@ -45,7 +67,12 @@ export default function Courses({ user }) {
                         <th>Subject</th>
                         <th>Credits</th>
                         <th>Description</th>
+
+                        {/* Teacher-only column */}
                         {user?.role === "Teacher" && <th>Actions</th>}
+
+                        {/* Student-only column */}
+                        {user?.role === "Student" && <th>Register</th>}
                     </tr>
                 </thead>
 
@@ -73,6 +100,25 @@ export default function Courses({ user }) {
                                     >
                                         Delete
                                     </button>
+                                </td>
+                            )}
+
+                            {/* Student-only Register button */}
+                            {user?.role === "Student" && (
+                                <td>
+                                    {user?.registeredCourses?.includes(course._id) ? (
+                                        <span style={styles.registeredTag}>
+                                            Registered
+                                        </span>
+
+                                    ) : (
+                                        <button
+                                            onClick={() => handleRegister(course._id)}
+                                            style={styles.registerButton}
+                                        >
+                                            Register
+                                        </button>
+                                    )}
                                 </td>
                             )}
                         </tr>
@@ -113,5 +159,22 @@ const styles = {
         border: "none",
         borderRadius: "4px",
         cursor: "pointer"
+    },
+    registerButton: {
+        padding: "0.3rem 0.6rem",
+        background: "green",
+        color: "white",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer"
+    },
+    registeredTag: {
+        padding: "0.3rem 0.6rem",
+        background: "#6c757d",
+        color: "white",
+        borderRadius: "12px",
+        fontSize: "0.85rem",
+        fontWeight: "600"
     }
+
 };
