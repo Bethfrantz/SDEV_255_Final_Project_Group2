@@ -9,6 +9,8 @@ import Courses from "./pages/Courses";
 import AddCourse from "./pages/AddCourse";
 import EditCourse from "./pages/EditCourse";
 import MySchedule from "./pages/MySchedule";
+import Register from "./pages/Register";
+
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -50,6 +52,8 @@ export default function App() {
 
             <Routes>
                 <Route path="/" element={<Home />} />
+
+                <Route path="/register" element={<Register />} />
 
                 <Route path="/login" element={<Login setUser={setUser} />} />
 

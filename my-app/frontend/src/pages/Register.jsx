@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 
-export default function Login({ setUser }) {
-    const [form, setForm] = useState({ username: "", password: "" });
+export default function Register() {
+    const [form, setForm] = useState({
+        name: "",
+        email: "",
+        password: "",
+        role: "Student"
+    });
+
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -15,7 +21,7 @@ export default function Login({ setUser }) {
         setLoading(true);
         setError("");
 
-        fetch("http://localhost:5000/login", {
+        fetch("http://localhost:5000/auth/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(form)
@@ -29,10 +35,8 @@ export default function Login({ setUser }) {
                     return;
                 }
 
-                if (data.token) {
-                    localStorage.setItem("token", data.token);
-                    setUser(data);
-                }
+                alert("Account created!");
+                window.location.href = "/login";
             })
             .catch(() => {
                 setLoading(false);
@@ -42,17 +46,31 @@ export default function Login({ setUser }) {
 
     return (
         <div className="auth-container fade-in">
+            <h2>Create Account</h2>
+
+            {error && <div className="auth-error">{error}</div>}
+
             <form onSubmit={handleSubmit} className="auth-form">
-                <h2>Login</h2>
 
-                {error && <div className="auth-error">{error}</div>}
-
-                {/* Username */}
+                {/* Full Name */}
                 <div className="input-wrapper">
-                    <span className="input-icon">👤</span>
+                    <span className="input-icon">📛</span>
                     <input
-                        name="username"
-                        placeholder="Username"
+                        type="text"
+                        name="name"
+                        placeholder="Full Name"
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+
+                {/* Email */}
+                <div className="input-wrapper">
+                    <span className="input-icon">📧</span>
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email"
                         onChange={handleChange}
                         required
                     />
@@ -62,8 +80,8 @@ export default function Login({ setUser }) {
                 <div className="input-wrapper">
                     <span className="input-icon">🔒</span>
                     <input
-                        name="password"
                         type={showPassword ? "text" : "password"}
+                        name="password"
                         placeholder="Password"
                         onChange={handleChange}
                         required
@@ -76,16 +94,22 @@ export default function Login({ setUser }) {
                     </span>
                 </div>
 
+                {/* Role Selector */}
+                <select name="role" onChange={handleChange}>
+                    <option value="Student">Student</option>
+                    <option value="Teacher">Teacher</option>
+                </select>
+
+                {/* Submit Button */}
                 <button type="submit" disabled={loading}>
-                    {loading ? "Logging in..." : "Login"}
+                    {loading ? "Creating..." : "Register"}
                 </button>
             </form>
 
             <div className="auth-footer">
-                <span>Don't have an account? </span>
-                <a href="/register">Register</a>
+                <span>Already have an account? </span>
+                <a href="/login">Login</a>
             </div>
         </div>
     );
 }
-

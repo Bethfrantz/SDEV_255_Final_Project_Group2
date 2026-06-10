@@ -35,9 +35,15 @@ export default function NavBar({ user, setUser }) {
                     )}
 
                     {!user ? (
-                        <NavLink to="/login" className="nav-link">
-                            Login
-                        </NavLink>
+                        <>
+                            <NavLink to="/login" className="nav-link">
+                                Login
+                            </NavLink>
+
+                            <NavLink to="/register" className="nav-link">
+                                Register
+                            </NavLink>
+                        </>
                     ) : (
                         <div className="user-section">
                             <span className="welcome">Welcome, {user.username}</span>
