@@ -1,23 +1,14 @@
 import React from "react";
 import NavBar from "./NavBar";
+import Footer from "./Footer";
 
-export default function Layout({ children }) {
+export default function Layout({ children, user, setUser }) {
     return (
-        <div style={styles.wrapper}>
-            <NavBar />
-            <main style={styles.main}>{children}</main>
+        <div className="layout-wrapper">
+            <NavBar user={user} setUser={setUser} />
+            <main className="layout-main">{children}</main>
+            <Footer />
         </div>
     );
 }
 
-const styles = {
-    wrapper: {
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-    },
-    main: {
-        flex: 1,
-        padding: "2rem",
-    },
-};
