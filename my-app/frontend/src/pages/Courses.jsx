@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Layout from "../components/Layout";
 import CourseCard from "../components/CourseCard";
 import "../style.css";
 
@@ -40,7 +41,6 @@ export default function Courses({ user, setUser }) {
         ]);
     }, []);
 
-
     // Teacher-only: Delete a course
     function handleDelete(id) {
         const confirmDelete = window.confirm("Are you sure you want to delete this course?");
@@ -78,7 +78,7 @@ export default function Courses({ user, setUser }) {
     }
 
     return (
-        <div>
+        <Layout user={user} setUser={setUser}>
             <h1>Courses</h1>
 
             {/* Teacher-only Add Course button */}
@@ -105,6 +105,6 @@ export default function Courses({ user, setUser }) {
                     />
                 ))}
             </div>
-        </div>
+        </Layout>
     );
 }
