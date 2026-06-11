@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Layout from "../components/Layout";
 
 export default function Login({ setUser }) {
     const [form, setForm] = useState({ username: "", password: "" });
@@ -41,51 +42,52 @@ export default function Login({ setUser }) {
     }
 
     return (
-        <div className="auth-container fade-in">
-            <form onSubmit={handleSubmit} className="auth-form">
-                <h2>Login</h2>
+        <Layout hideFooter={true}>
+            <div className="auth-container fade-in">
+                <form onSubmit={handleSubmit} className="auth-form">
+                    <h2>Login</h2>
 
-                {error && <div className="auth-error">{error}</div>}
+                    {error && <div className="auth-error">{error}</div>}
 
-                {/* Username */}
-                <div className="input-wrapper">
-                    <span className="input-icon">👤</span>
-                    <input
-                        name="username"
-                        placeholder="Username"
-                        onChange={handleChange}
-                        required
-                    />
+                    {/* Username */}
+                    <div className="input-wrapper">
+                        <span className="input-icon">👤</span>
+                        <input
+                            name="username"
+                            placeholder="Username"
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    {/* Password with toggle */}
+                    <div className="input-wrapper">
+                        <span className="input-icon">🔒</span>
+                        <input
+                            name="password"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Password"
+                            onChange={handleChange}
+                            required
+                        />
+                        <span
+                            className="toggle-password"
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
+                            {showPassword ? "🙈" : "👁️"}
+                        </span>
+                    </div>
+
+                    <button type="submit" disabled={loading}>
+                        {loading ? "Logging in..." : "Login"}
+                    </button>
+                </form>
+
+                <div className="auth-footer">
+                    <span>Don't have an account? </span>
+                    <a href="/register">Register</a>
                 </div>
-
-                {/* Password with toggle */}
-                <div className="input-wrapper">
-                    <span className="input-icon">🔒</span>
-                    <input
-                        name="password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Password"
-                        onChange={handleChange}
-                        required
-                    />
-                    <span
-                        className="toggle-password"
-                        onClick={() => setShowPassword(!showPassword)}
-                    >
-                        {showPassword ? "🙈" : "👁️"}
-                    </span>
-                </div>
-
-                <button type="submit" disabled={loading}>
-                    {loading ? "Logging in..." : "Login"}
-                </button>
-            </form>
-
-            <div className="auth-footer">
-                <span>Don't have an account? </span>
-                <a href="/register">Register</a>
             </div>
-        </div>
+        </Layout>
     );
 }
-

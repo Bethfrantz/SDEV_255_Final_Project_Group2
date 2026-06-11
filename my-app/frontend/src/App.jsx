@@ -45,7 +45,7 @@ export default function App() {
 
     return (
         <>
-            <NavBar user={user} setUser={setUser} />
+
 
             {/* Toast notifications */}
             <ToastContainer position="top-right" autoClose={2000} />
