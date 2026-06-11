@@ -1,109 +1,130 @@
-# 🎓 College Course Website — Full‑Stack React Application
+# College Course Management App
 
-A full‑stack college course website featuring a modern Home page, a dynamic Courses page that loads data from a backend API, and a secure Login page for students and instructors. Built with a React + Vite frontend and a Node/Express backend, this project demonstrates clean routing, API integration, and responsive UI design.
-
----
+A full‑stack web application that allows students to browse and register for courses, and allows teachers to create, edit, and manage course offerings. Built with a modern React frontend and a secure Node.js/Express backend.
 
 ## 🚀 Features
 
-- **Home Page** — Clean landing page introducing the college
-- **Courses Page** — Displays available courses pulled from the backend API
-- **Login Page** — Secure login system for students/instructors (frontend UI)
-- **REST API Backend** — Node/Express server providing course + user endpoints
-- **Responsive UI** — Works on desktop, tablet, and mobile
-- **Reusable Components** — Organized React structure with modular design
+### 👩‍🏫 Teacher Features
+- Create new courses
+- Edit existing courses
+- Delete courses
+- View all course listings
+
+### 🎓 Student Features
+- Register for courses
+- View personal schedule
+- Prevent duplicate registrations
+- See which courses are already registered
+
+### 🔐 Authentication
+- JWT‑based login system
+- Role‑based UI (Teacher vs Student)
+- Auto‑login on refresh
+- Password visibility toggle
+- Error handling + loading states
+
+### 🎨 Modern UI/UX
+- Animated gradient background
+- Dark mode toggle
+- Smooth fade‑in animations
+- Input icons + password toggle
+- Styled login/register pages
+- Responsive layout
 
 ---
 
-## 🛠 Tech Stack
+## 🛠️ Tech Stack
 
-### **Frontend**
-- React  
-- Vite  
-- JavaScript  
-- CSS3  
-- React Router  
+### Frontend
+- React (Vite)
+- React Router
+- JWT Decode
+- Toastify
+- Custom CSS (auth pages, cards, navbar)
 
-### **Backend**
-- Node.js  
-- Express  
-- REST API  
-- CORS  
-- JSON data / mock database  
+### Backend
+- Node.js
+- Express
+- MongoDB / Mongoose
+- JWT Authentication
+- Bcrypt password hashing
 
 ---
 
-## 📁 Project Structure
-my-app/
-backend/
-server.js
-routes/
-controllers/
-models/
+## 📂 Project Structure
+
 frontend/
 src/
 components/
 pages/
-App.jsx
+styles/
+backend/
+routes/
+models/
+controllers/
 
 ---
 
-## 📸 Screenshots
+## 🔑 How to Run the Project
 
-Add your screenshots here:
-
-- Home Page  
-- Courses Page  
-- Login Page  
-- API Response (optional)
-
----
-
-## 🧩 How to Run the Project Locally
-
-### 1️⃣ Clone the repository
-```bash
-git clone https://github.com/Bethfrantz/SDEV_255_Final_Project_Group2
-
-2️⃣ Install backend dependencies
-Backend runs on:
-cd my-app/backend
+### Backend
+cd backend
 npm install
 npm start
 
-3️⃣ Install frontend dependencies
-Open a second terminal:
-cd my-app/frontend
+### Frontend
+cd frontend
 npm install
 npm run dev
 
-Frontend runs on:
-http://localhost:5173
+---
 
-🔌 API Endpoints (Example)
-GET /api/courses
-Returns a list of available courses.
+## 👤 User Roles
 
-POST /api/login
-Authenticates a user (mock login for demo purposes).
+### Teacher Account
+- Can add/edit/delete courses
 
-👩‍💻 My Contributions
-Built the entire React frontend (Home, Courses, Login)
-
-Implemented API integration between frontend and backend
-
-Designed and structured the Express backend
-
-Created reusable UI components
-
-Debugged routing, CORS, and Vite issues
-
-Organized the GitHub repo and project structure
-
-📎 Links
-GitHub Repository: https://github.com/Bethfrantz/SDEV_255_Final_Project_Group2
-
-📄 License
-This project was created for educational purposes as part of a college course.
+### Student Account
+- Can register for courses
+- Can view personal schedule
 
 ---
+
+## 🧪 Example Test Accounts
+
+**Teacher**
+- Email: teacher@test.com
+- Password: any
+
+**Student**
+- Email: student@test.com
+- Password: any
+
+---
+
+## ✨ What I Built (Beth’s Contributions)
+
+- Designed and implemented the entire frontend UI  
+- Built the Login + Register pages with modern animations  
+- Added password visibility toggle, icons, and dark mode  
+- Implemented role‑based navigation (Teacher vs Student)  
+- Built Add Course, Edit Course, and My Schedule pages  
+- Integrated JWT authentication and auto‑login  
+- Styled the entire app to be portfolio‑ready  
+- Debugged routing, state management, and backend integration  
+- Wrote clean, readable code with reusable components  
+
+---
+
+## 📸 Screenshots (optional)
+Add these once you take them:
+- Login page  
+- Register page  
+- Courses page  
+- Add Course page  
+- My Schedule page  
+
+---
+
+## 📄 License
+MIT
